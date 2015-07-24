@@ -1,0 +1,86 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+
+<body>
+<div class="container">
+    <h1>Spezifikation "Places to remember"</h1>
+    <blockquote>
+        <p>Ziel der Anwendung soll es sein, eine Liste von Orten mit einem Timestamp zu speichern, an dem der Ort zum
+            letzten Mal vom Benutzer besucht wurde.</p>
+    </blockquote>
+
+
+    <h3><span class="label label-info">GIVEN</span></h3>
+    <blockquote>
+        <p>&#xDC;ber eine REST API werden die folgenden Werte in einer Datenbank persistiert.</p>
+    </blockquote>
+
+    <table class="table" concordion:execute="createPlace(#name, #dateLastVisit)">
+        <tr>
+            <th concordion:set="#name">Name</th>
+            <th concordion:set="#dateLastVisit">Last visit</th>
+        </tr>
+        <tr>
+            <td>Codecentric Solingen</td>
+            <td>19/08/2014</td>
+            <!--<td>1 year, 3 month and 3 days ago</td>-->
+        </tr>
+        <tr>
+            <td>Codecentric Münster</td>
+            <td>24/06/2015</td>
+            <!--<td>28 days ago</td>-->
+        </tr>
+        <tr>
+            <td>Codecentric Frankfurt</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Codecentric München</td>
+            <td>18/08/2014</td>
+            <!--<td>11 month and 4 days ago</td>-->
+        </tr>
+        <tr>
+            <td>Codecentric Serbien</td>
+            <td>23/05/2015</td>
+            <!--<td>11 month and 13 days ago</td>-->
+        </tr>
+    </table>
+
+    <h3><span class="label label-info">WHEN</span></h3>
+    <blockquote>
+        <p>Die Anzahl der Datensätze ist: <b concordion:assertEquals="getPlacesCount()">5</b> Einträge</p>
+    </blockquote>
+
+    <h3><span class="label label-info">THEN</span></h3>
+    <blockquote>
+        <p>Sehe ich die folgenden <b>5</b> Elemente mit ihren entsprechenden Werten. </p>
+    </blockquote>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Last visit</th>
+        </tr>
+        <tr>
+            <td>Codecentric Solingen</td>
+            <td>1 year, 3 month and 3 days ago</td>
+        </tr>
+        <tr>
+            <td>Codecentric Münster</td>
+            <td>28 days ago</td>
+        </tr>
+        <tr>
+            <td>Codecentric Frankfurt</td>
+            <td>you´ve never been there</td>
+        </tr>
+        <tr>
+            <td>Codecentric München</td>
+            <td>11 month and 4 days ago</td>
+        </tr>
+        <tr>
+            <td>Codecentric Serbien</td>
+            <td>11 month and 13 days ago</td>
+        </tr>
+    </table>
+
+</div>
+</body>
+</html>

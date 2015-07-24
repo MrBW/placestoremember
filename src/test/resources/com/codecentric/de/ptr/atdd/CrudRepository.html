@@ -1,17 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Spezifikation f&uuml;r "Places to remember" </title>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-</head>
 <body>
 <div class="container">
     <h1>Spezifikation "Places to remember"</h1>
@@ -23,17 +11,17 @@
 
     <h3><span class="label label-info">GIVEN</span></h3>
     <blockquote>
-        <p>&Uuml;ber eine REST API werden die folgenden Werte in einer Datenbank persistiert.</p>
+        <p>Folgende Daten werden der Datenbank persistiert.</p>
     </blockquote>
 
-    <table class="table">
+    <table class="table" concordion:execute="createPlace(#name, #dateLastVisit)">
         <tr>
-            <th>Name</th>
-            <th>Last visit</th>
+            <th concordion:set="#name">Name</th>
+            <th concordion:set="#dateLastVisit">Last visit</th>
         </tr>
         <tr>
             <td>Codecentric Solingen</td>
-            <td>19/08/2014</td>
+            <td>19/02/2014</td>
             <!--<td>1 year, 3 month and 3 days ago</td>-->
         </tr>
         <tr>
@@ -59,21 +47,24 @@
 
     <h3><span class="label label-info">WHEN</span></h3>
     <blockquote>
-        <p>Wenn ich die folgende URL <b>http://localhost:8080</b> der Anwendung aufrufe</p>
+        <p>Wenn ich mir alle Places aus der Datenbank liefern lasse, erhalte ich die folgenden Werte</p>
     </blockquote>
 
     <h3><span class="label label-info">THEN</span></h3>
     <blockquote>
-        <p>Sehe ich die folgenden <b>5</b> Elemente mit ihren entsprechenden Werten. </p>
+        <p>Sehe ich die folgenden <b concordion:assertEquals="countPlaces()">5</b> Elemente mit ihren entsprechenden
+            Werten. </p>
     </blockquote>
-    <table class="table">
+    <p>Als Grundlage für die Berechnung der Tage wird das Datum <b concordion:set="#calcWithDate">22/07/2015</b>
+        verwendet.</p>
+    <table class="table" concordion:execute="#days = findByNameAndReturnDaysSinceLastVisit(#name, #calcWithDate)">
         <tr>
-            <th>Name</th>
-            <th>Last visit</th>
+            <th concordion:set="#name">Name</th>
+            <th concordion:assertEquals="#days">Last visit</th>
         </tr>
         <tr>
             <td>Codecentric Solingen</td>
-            <td>1 year, 3 month and 3 days ago</td>
+            <td>1 year, 5 months and 3 days ago</td>
         </tr>
         <tr>
             <td>Codecentric Münster</td>
@@ -81,15 +72,15 @@
         </tr>
         <tr>
             <td>Codecentric Frankfurt</td>
-            <td>you´ve never been there</td>
+            <td>you have never been there</td>
         </tr>
         <tr>
             <td>Codecentric München</td>
-            <td>11 month and 4 days ago</td>
+            <td>11 months and 4 days ago</td>
         </tr>
         <tr>
             <td>Codecentric Serbien</td>
-            <td>11 month and 13 days ago</td>
+            <td>1 month and 29 days ago</td>
         </tr>
     </table>
 

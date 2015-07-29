@@ -1,8 +1,9 @@
 package com.codecentric.de.ptr.service;
 
 import com.codecentric.de.ptr.Application;
-import com.codecentric.de.ptr.domain.Place;
-import com.codecentric.de.ptr.domain.PlaceRepository;
+import com.codecentric.de.ptr.model.Place;
+import com.codecentric.de.ptr.repository.PlaceRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Date;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -24,6 +24,12 @@ public class PlaceRepositoryTest {
 
     @Autowired
     private PlaceRepository placeRepository;
+
+    @Before
+    public void setUp() {
+
+        placeRepository.deleteAll();
+    }
 
 
     @Test
@@ -53,6 +59,17 @@ public class PlaceRepositoryTest {
         assertThat(removed, is(nullValue()));
 
 
+    }
+
+    public void findByName() {
+        String searchForName = "findByName";
+        Place p = new Place();
+        p.setName(searchForName);
+        p.setLastVisit(new Date());
+
+        placeRepository.save(p);
+
+        assertThat(placeRepository.findByName(searchForName), is(notNullValue()));
     }
 
 }

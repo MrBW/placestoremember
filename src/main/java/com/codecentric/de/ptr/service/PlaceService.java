@@ -17,7 +17,7 @@ public class PlaceService {
     public String getDaysSinceLastVisit(Date fromDate, Date toDate) {
         StringBuilder returnString = new StringBuilder();
 
-        if (fromDate == null | toDate == null)
+        if (fromDate == null || toDate == null)
             return "you have never been there";
 
         LocalDate startDate = fromDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();

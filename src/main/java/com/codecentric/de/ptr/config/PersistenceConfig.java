@@ -21,7 +21,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = {"com.codecentric.de.ptr.domain"})
+@EnableJpaRepositories(basePackages = {"com.codecentric.de.ptr.repository"})
 public class PersistenceConfig {
 
     @Bean(destroyMethod = "close")
@@ -40,7 +40,7 @@ public class PersistenceConfig {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        entityManagerFactoryBean.setPackagesToScan("com.codecentric.de.ptr.domain");
+        entityManagerFactoryBean.setPackagesToScan("com.codecentric.de.ptr.model");
 
         Properties jpaProperties = new Properties();
 

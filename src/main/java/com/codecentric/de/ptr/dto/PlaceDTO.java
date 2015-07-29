@@ -1,20 +1,14 @@
-package com.codecentric.de.ptr.domain;
+package com.codecentric.de.ptr.dto;
 
-import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by benjaminwilms on 23.07.15.
+ * Created by benjaminwilms on 27.07.15.
  */
-@Entity
-public class Place {
+public class PlaceDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long Id;
     private Date lastVisit;
 
-    @Column(unique = true)
     private String name;
 
     private String street;
@@ -24,13 +18,6 @@ public class Place {
     private double lat;
     private double lon;
 
-    public long getId() {
-        return Id;
-    }
-
-    public void setId(long id) {
-        Id = id;
-    }
 
     public Date getLastVisit() {
         return lastVisit;
@@ -95,4 +82,5 @@ public class Place {
     public void setLon(double lon) {
         this.lon = lon;
     }
+
 }

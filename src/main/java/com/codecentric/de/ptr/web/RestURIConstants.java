@@ -5,7 +5,10 @@ package com.codecentric.de.ptr.web;
  */
 public class RestURIConstants {
 
-    public static final String CREATE_PLACE = "/create";
-    public static final String LIST_PLACES = "/list_places";
+    private static final String ROOT = "/places";
+    public static final String PLACES_CREATE = ROOT + "/create";
+    public static final String PLACES_LIST = ROOT + "/places";
+    public static final String PLACES_FIND = ROOT + "/find";
+    public static final String PLACES_LASTVISIT = ROOT + "/lastvisit";
 
 }

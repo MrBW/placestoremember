@@ -14,13 +14,14 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by benjaminwilms on 23.07.15.
  */
 
 @RestController
-public class PlacesController {
+class PlacesController {
 
     @Autowired
     private PlaceRepository placeRepository;
@@ -36,8 +37,16 @@ public class PlacesController {
 
     }
 
+    @RequestMapping(value = RestURIConstants.PLACES_LIST, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Place>> getAllPlaces() {
+
+        return new ResponseEntity<List<Place>>(placeRepository.findAll(), HttpStatus.OK);
+
+    }
+
+
     @RequestMapping(value = RestURIConstants.PLACES_FIND, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PlaceDTO> findPlaceByName(@RequestParam(value = "name", required = true) String name) {
+    public ResponseEntity findPlaceByName(@RequestParam(value = "name", required = true) String name) {
         // required = true
         if (StringUtils.isEmpty(name))
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -45,9 +54,9 @@ public class PlacesController {
         else {
             Place place = placeRepository.findByName(name);
 
-            if (place == null)
+            if (place == null) {
                 return new ResponseEntity(HttpStatus.NOT_FOUND);
-            else {
+            } else {
                 // Map to DTO
                 PlaceDTO placeDTO = mapToPlaceDTO(place);
 

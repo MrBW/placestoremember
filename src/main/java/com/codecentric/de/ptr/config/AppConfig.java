@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
         PersistenceConfig.class
 
 )
-public class AppConfig {
+class AppConfig {
 
 
 }

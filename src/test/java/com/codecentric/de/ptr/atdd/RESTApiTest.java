@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -22,8 +23,6 @@ import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -31,7 +30,7 @@ import java.util.Map;
 public class RESTApiTest {
 
 
-    private static String URI = "http://localhost:8080/";
+    private static final String URI = "http://localhost:8080/";
     @Autowired
     private PlaceRepository placeRepository;
 
@@ -71,7 +70,7 @@ public class RESTApiTest {
     private Date getDateFromString(String lastVisitDate) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
-        Date date = null;
+        Date date;
         try {
             date = formatter.parse(lastVisitDate);
 
@@ -81,16 +80,25 @@ public class RESTApiTest {
         return date;
     }
 
-    public long countPlaces() {
-        return placeRepository.count();
+    public int countPlaces() {
+
+        RestTemplate restTemplate = new RestTemplate();
+        URI urlGETList = UriComponentsBuilder.fromUriString(URI)
+                .path(RestURIConstants.PLACES_LIST)
+                .build()
+                .toUri();
+
+        ResponseEntity<Object[]> responseEntity = restTemplate.getForEntity(urlGETList, Object[].class);
+        Object[] objects = responseEntity.getBody();
+        //MediaType contentType = responseEntity.getHeaders().getContentType();
+        //HttpStatus statusCode = responseEntity.getStatusCode();
+
+        return objects.length;
     }
 
     public String findByNameAndReturnDaysSinceLastVisit(String name, String calcWithDate) {
         Date endDate = getDateFromString(calcWithDate);
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-        Map<String, String> paramsFind = new HashMap<String, String>();
-        paramsFind.put("name", name);
 
         RestTemplate restTemplate = new RestTemplate();
         URI urlFindByName = UriComponentsBuilder.fromUriString(URI)
@@ -109,9 +117,7 @@ public class RESTApiTest {
                 .toUri();
 
 
-        String result = restTemplate.getForObject(urlLastVisit, String.class);
-
-        return result;
+        return restTemplate.getForObject(urlLastVisit, String.class);
     }
 
 

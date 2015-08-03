@@ -22,9 +22,9 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = {"com.codecentric.de.ptr.repository"})
-public class PersistenceConfig {
+class PersistenceConfig {
 
-    @Bean(destroyMethod = "close")
+    @Bean
     public DataSource dataSource(Environment env) {
         HikariConfig dataSourceConfig = new HikariConfig();
         dataSourceConfig.setDriverClassName(env.getRequiredProperty("db.driver"));

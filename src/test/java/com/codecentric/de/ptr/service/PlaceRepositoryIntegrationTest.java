@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThat;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-public class PlaceRepositoryTest {
+public class PlaceRepositoryIntegrationTest {
 
     @Autowired
     private PlaceRepository placeRepository;
@@ -33,7 +33,7 @@ public class PlaceRepositoryTest {
 
 
     @Test
-    public void createPlace() {
+    public void testCreatePlace() {
         Place p = new Place();
         p.setName("CREATE");
         p.setLastVisit(new Date());
@@ -45,7 +45,7 @@ public class PlaceRepositoryTest {
     }
 
     @Test
-    public void removePlace() {
+    public void testRemovePlace() {
         Place p = new Place();
         p.setName("REMOVE");
         p.setLastVisit(new Date());
@@ -61,7 +61,8 @@ public class PlaceRepositoryTest {
 
     }
 
-    public void findByName() {
+    @Test
+    public void testFindByName() {
         String searchForName = "findByName";
         Place p = new Place();
         p.setName(searchForName);
@@ -70,6 +71,36 @@ public class PlaceRepositoryTest {
         placeRepository.save(p);
 
         assertThat(placeRepository.findByName(searchForName), is(notNullValue()));
+    }
+
+    @Test
+    public void testUpdatePlace() {
+        String firstName = "FIRST_NAME";
+        String newName = "NEW_NAME";
+
+        Place p = new Place();
+        p.setName(firstName);
+
+        // First save
+        placeRepository.save(p);
+
+        //Find Place
+        Place firstByName = placeRepository.findByName(firstName);
+
+        // Change name
+        firstByName.setName(newName);
+
+        // Save with new Name
+        placeRepository.save(firstByName);
+
+        // Double check new Name and old origin ID
+        Place newByName = placeRepository.findByName(newName);
+
+        // Check new name
+        assertThat(newByName.getName(), is(newName));
+        assertThat(newByName.getId(), is(firstByName.getId()));
+
+
     }
 
 }
